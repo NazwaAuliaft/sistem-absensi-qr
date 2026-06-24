@@ -1,81 +1,250 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Absensi QR</title>
+
+```
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+    body{
+        background:#f4f6f9;
+    }
+
+    .navbar{
+        box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .card{
+        border:none;
+        border-radius:15px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .stat-card{
+        color:white;
+    }
+
+    .table{
+        background:white;
+    }
+
+</style>
+```
+
 </head>
 <body>
 
-<h1>Sistem Absensi QR</h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
 
+```
+    <span class="navbar-brand">
+        <i class="bi bi-qr-code-scan"></i>
+        Sistem Absensi QR
+    </span>
+
+</div>
+```
+
+</nav>
+
+<div class="container mt-4">
+
+```
 @if(session('success'))
-    <p style="color:green">
+    <div class="alert alert-success">
         {{ session('success') }}
-    </p>
+    </div>
 @endif
 
 @if(session('error'))
-    <p style="color:red">
+    <div class="alert alert-danger">
         {{ session('error') }}
-    </p>
+    </div>
 @endif
 
-<h2>Dashboard</h2>
+<div class="row mb-4">
 
-<p>Total Absensi : {{ $total }}</p>
-<p>Hadir Hari Ini : {{ $hadirHariIni }}</p>
+    <div class="col-md-6">
 
-<hr>
+        <div class="card stat-card bg-primary">
+            <div class="card-body">
 
-<h2>Form Absensi</h2>
+                <h5>
+                    <i class="bi bi-people-fill"></i>
+                    Total Absensi
+                </h5>
 
-<form action="/absen" method="POST">
-    @csrf
+                <h1>{{ $total }}</h1>
 
-    <input
-        type="text"
-        name="nis"
-        placeholder="Masukkan NIS"
-        required>
+            </div>
+        </div>
 
-    <br><br>
+    </div>
 
-    <input
-        type="text"
-        name="nama"
-        placeholder="Masukkan Nama"
-        required>
+    <div class="col-md-6">
 
-    <br><br>
+        <div class="card stat-card bg-success">
+            <div class="card-body">
 
-    <button type="submit">
-        Absen
-    </button>
-</form>
+                <h5>
+                    <i class="bi bi-check-circle-fill"></i>
+                    Hadir Hari Ini
+                </h5>
 
-<hr>
+                <h1>{{ $hadirHariIni }}</h1>
 
-<h2>Data Absensi</h2>
+            </div>
+        </div>
 
-<table border="1" cellpadding="10">
-    <tr>
-        <th>NIS</th>
-        <th>Nama</th>
-        <th>Tanggal</th>
-        <th>Jam Masuk</th>
-        <th>Status</th>
-    </tr>
+    </div>
 
-    @foreach($attendances as $a)
-    <tr>
-        <td>{{ $a->nis }}</td>
-        <td>{{ $a->nama }}</td>
-        <td>{{ $a->tanggal }}</td>
-        <td>{{ $a->jam_masuk }}</td>
-        <td>{{ $a->status }}</td>
-    </tr>
-    @endforeach
+</div>
 
-</table>
+<div class="row">
+
+    <div class="col-md-4">
+
+        <div class="card">
+
+            <div class="card-header bg-white">
+                <h5 class="mb-0">
+                    Form Absensi
+                </h5>
+            </div>
+
+            <div class="card-body">
+
+                <form action="/absen" method="POST">
+
+                    @csrf
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            NIS
+                        </label>
+
+                        <input
+                            type="text"
+                            name="nis"
+                            class="form-control"
+                            placeholder="Masukkan NIS"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Nama
+                        </label>
+
+                        <input
+                            type="text"
+                            name="nama"
+                            class="form-control"
+                            placeholder="Masukkan Nama"
+                            required>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Simpan Absensi
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class="card">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+                    Data Absensi
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-primary">
+
+                        <tr>
+                            <th>NIS</th>
+                            <th>Nama</th>
+                            <th>Tanggal</th>
+                            <th>Jam Masuk</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($attendances as $a)
+
+                        <tr>
+
+                            <td>{{ $a->nis }}</td>
+                            <td>{{ $a->nama }}</td>
+                            <td>{{ $a->tanggal }}</td>
+                            <td>{{ $a->jam_masuk }}</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    {{ $a->status }}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        @empty
+
+                        <tr>
+
+                            <td colspan="5" class="text-center">
+                                Belum ada data absensi
+                            </td>
+
+                        </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
 
 </body>
 </html>
