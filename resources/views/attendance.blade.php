@@ -72,6 +72,43 @@ body{
     margin-bottom:0;
 }
 
+.card-header{
+    background:white;
+    font-weight:bold;
+    border-bottom:1px solid #eee;
+}
+
+canvas{
+    max-height:350px;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    transition:0.3s;
+}
+
+.sidebar{
+    box-shadow:5px 0 20px rgba(0,0,0,.15);
+}
+
+#clock{
+    font-weight:bold;
+    background:white;
+    padding:10px 20px;
+    border-radius:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+
+.logo-area img{
+    background:white;
+    padding:8px;
+    border-radius:15px;
+}
+
+table tbody tr:hover{
+    background:#f8fafc;
+}
+
 </style>
 
 </head>
@@ -234,9 +271,27 @@ body{
 
                         </div>
 
-                        <button class="btn btn-primary w-100">
-                            Simpan Absensi
-                        </button>
+                        <div class="mb-3">
+
+                            <label>Status Kehadiran</label>
+
+                            <select
+                                name="status"
+                                class="form-control"
+                                required>
+
+                                <option value="Hadir">Hadir</option>
+                                <option value="Izin">Izin</option>
+                                <option value="Sakit">Sakit</option>
+                                <option value="Alpha">Alpha</option>
+
+                        </select>
+
+                    </div>
+
+                    <button class="btn btn-primary w-100">
+                        Simpan Absensi
+                    </button>
 
                     </form>
 
@@ -291,19 +346,21 @@ body{
 
                         @endforeach
 
-                        </tbody>
+                       <div class="card mt-4">
 
-                    </table>
+    <div class="card-header fw-bold">
+        📊 Statistik Kehadiran Mahasiswa
+    </div>
 
-                </div>
+    <div class="card-body">
 
-            </div>
-
-        </div>
+        <canvas id="attendanceChart" height="120"></canvas>
 
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
@@ -322,7 +379,67 @@ setInterval(updateClock,1000);
 
 updateClock();
 
-</script>
+const ctx = document.getElementById('attendanceChart');
 
-</body>
-</html>
+const gradient = ctx.getContext('2d').createLinearGradient(0,0,0,400);
+
+gradient.addColorStop(0,'#2563eb');
+gradient.addColorStop(1,'#60a5fa');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+            'hadir',
+            'izin',
+            'sakit',
+            'alpha'
+        ],
+
+        datasets: [{
+
+            label: 'Jumlah Mahasiswa',
+
+            data: [
+                {{ $hadir }},
+                {{ $izin }},
+                {{ $sakit }},
+                {{ $alpha }}
+            ],
+
+            backgroundColor: [
+                '22c55e',
+                '3b82f6',
+                'f59e0b',
+                'ef4444'
+            ]
+
+            borderRadius: 12,
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        legend: {
+            display:false
+        }
+    },
+
+        scales: {
+
+            y: {
+                beginAtZero:true
+            }
+
+        }
+
+    });
+
+</script> 

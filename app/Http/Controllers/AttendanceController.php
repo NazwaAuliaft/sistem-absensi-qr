@@ -12,14 +12,35 @@ class AttendanceController extends Controller
         $attendances = Attendance::latest()->get();
 
         $total = $attendances->count();
-        
-        $hadirHariIni = Attendance::where('tanggal', now()->toDateString())
+
+        $hadirHariIni = $attendances
+            ->where('tanggal', today()->toDateString())
+            ->count();
+
+        $hadir = $attendances
+            ->where('status', 'Hadir')
+            ->count();
+
+        $izin = $attendances
+            ->where('status', 'Izin')
+            ->count();
+
+        $sakit = $attendances
+            ->where('status', 'Sakit')
+            ->count();
+
+        $alpha = $attendances
+            ->where('status', 'Alpha')
             ->count();
 
         return view('attendance', compact(
             'attendances',
             'total',
-            'hadirHariIni'
+            'hadirHariIni',
+            'hadir',
+            'izin',
+            'sakit',
+            'alpha'
         ));
     }
 
@@ -30,9 +51,10 @@ class AttendanceController extends Controller
             'nama' => $request->nama,
             'tanggal' => now()->toDateString(),
             'jam_masuk' => now()->format('H:i:s'),
-            'status' => 'Hadir'
+            'status' => $request->status
         ]);
 
-        return redirect('/')->with('success', 'Absensi berhasil disimpan');
+        return redirect('/')
+            ->with('success', 'Absensi berhasil disimpan');
     }
 }
