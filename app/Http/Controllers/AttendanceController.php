@@ -11,7 +11,16 @@ class AttendanceController extends Controller
     {
         $attendances = Attendance::latest()->get();
 
-        return view('attendance', compact('attendances'));
+        $total = $attendances->count();
+        
+        $hadirHariIni = Attendance::where('tanggal', now()->toDateString())
+            ->count();
+
+        return view('attendance', compact(
+            'attendances',
+            'total',
+            'hadirHariIni'
+        ));
     }
 
     public function store(Request $request)
