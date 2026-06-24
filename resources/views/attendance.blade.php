@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Sistem Absensi Mahasiswa</title>
+<title>Absensi Mahasiswa USM</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,35 +12,35 @@
 <style>
 
 body{
-    background:#f5f7fb;
+    background:#f4f7fc;
     margin:0;
 }
 
 .sidebar{
-    width:260px;
+    width:270px;
     height:100vh;
     position:fixed;
-    background:#0f172a;
-    color:white;
     left:0;
     top:0;
+    background:#0f172a;
+    color:white;
 }
 
 .logo-area{
     text-align:center;
-    padding:25px;
+    padding:20px;
     border-bottom:1px solid rgba(255,255,255,.1);
 }
 
-.logo-area h4{
-    margin-top:10px;
+.logo-area img{
+    width:110px;
 }
 
 .sidebar-menu a{
     display:block;
+    padding:15px 25px;
     color:white;
     text-decoration:none;
-    padding:15px 25px;
 }
 
 .sidebar-menu a:hover{
@@ -48,26 +48,28 @@ body{
 }
 
 .content{
-    margin-left:260px;
+    margin-left:270px;
     padding:25px;
 }
 
 .card{
     border:none;
-    border-radius:18px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.stat-card{
-    color:white;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
 .total-card{
     background:linear-gradient(135deg,#2563eb,#60a5fa);
+    color:white;
 }
 
 .today-card{
     background:linear-gradient(135deg,#059669,#34d399);
+    color:white;
+}
+
+.table{
+    margin-bottom:0;
 }
 
 </style>
@@ -79,11 +81,15 @@ body{
 
     <div class="logo-area">
 
-        <i class="bi bi-building fs-1"></i>
+        <img src="{{ asset('images/logo_banner_warna.png') }}" alt="Logo USM">
 
-        <h4>Kampus Digital</h4>
+        <h5 class="mt-3">
+            Universitas Saintek Muhammadiyah
+        </h5>
 
-        <small>Sistem Absensi Mahasiswa</small>
+        <small>
+            Sistem Absensi Mahasiswa
+        </small>
 
     </div>
 
@@ -112,11 +118,51 @@ body{
 
     <div class="d-flex justify-content-between mb-4">
 
-        <h2>
-            Dashboard Absensi Mahasiswa
-        </h2>
+        <div>
+
+            <h2 class="mb-0">
+                Dashboard Absensi Mahasiswa
+            </h2>
+
+            <small class="text-muted">
+                Universitas Saintek Muhammadiyah
+            </small>
+
+        </div>
 
         <div id="clock"></div>
+
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="card-body">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-2 text-center">
+
+                    <img
+                        src="{{ asset('images/logo_banner_warna.png') }}"
+                        width="100">
+
+                </div>
+
+                <div class="col-md-10">
+
+                    <h3>
+                        Universitas Saintek Muhammadiyah
+                    </h3>
+
+                    <p class="mb-0">
+                        Sistem Informasi Absensi Mahasiswa Berbasis QR Code
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -124,7 +170,7 @@ body{
 
         <div class="col-md-6">
 
-            <div class="card total-card stat-card p-4">
+            <div class="card total-card p-4">
 
                 <h5>Total Absensi</h5>
 
@@ -136,7 +182,7 @@ body{
 
         <div class="col-md-6">
 
-            <div class="card today-card stat-card p-4">
+            <div class="card today-card p-4">
 
                 <h5>Hadir Hari Ini</h5>
 
@@ -189,9 +235,7 @@ body{
                         </div>
 
                         <button class="btn btn-primary w-100">
-
                             Simpan Absensi
-
                         </button>
 
                     </form>
@@ -220,7 +264,7 @@ body{
                             <th>NIM</th>
                             <th>Nama</th>
                             <th>Tanggal</th>
-                            <th>Jam</th>
+                            <th>Jam Masuk</th>
                             <th>Status</th>
                         </tr>
 
