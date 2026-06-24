@@ -253,6 +253,7 @@ table tbody tr:hover{
 
                             <input
                                 type="text"
+                                id="nis"
                                 name="nis"
                                 class="form-control"
                                 required>
@@ -265,15 +266,17 @@ table tbody tr:hover{
 
                             <input
                                 type="text"
-                                name="nama"
+                                id="nis"
+                                name="nis"
                                 class="form-control"
                                 required>
 
                         </div>
 
-                        <div class="mb-3">
-
-                            <label>Status Kehadiran</label>
+                        <div class="mt-3">
+                            <label class="fw-bold">Scan QR Mahasiswa</label/>
+                            <div id="reader"></div>
+                        </div>
 
                             <select
                                 name="status"
@@ -358,66 +361,31 @@ table tbody tr:hover{
 
 </div>
 
+<script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
 
 <script>
 
-const ctx = document.getElementById('attendanceChart');
+function onScanSuccess(decodedText){
 
-new Chart(ctx, {
+    document.getElementById('nis').value = decodedText;
 
-    type: 'bar',
+}
 
-    data: {
+if(document.getElementById('reader')){
 
-        labels: ['Hadir','Izin','Sakit','Alpha'],
-
-        datasets: [{
-
-            label: 'Jumlah Mahasiswa',
-
-            data: [
-                {{ $hadir }},
-                {{ $izin }},
-                {{ $sakit }},
-                {{ $alpha }}
-            ],
-
-            backgroundColor: [
-                '#22c55e',
-                '#3b82f6',
-                '#f59e0b',
-                '#ef4444'
-            ],
-
-            borderRadius: 10
-
-        }]
-
-    },
-
-    options: {
-
-        responsive: true,
-
-        plugins: {
-
-            legend: {
-                display: false
-            }
-
-        },
-
-        scales: {
-
-            y: {
-                beginAtZero: true
-            }
-
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        {
+            fps: 10,
+            qrbox: 250
         }
+    );
 
-    }
+    html5QrcodeScanner.render(onScanSuccess);
 
-});
+}
 
 </script>
