@@ -20,5 +20,12 @@ return new class extends Migration
         $table->time('jam_pulang')->nullable();
         $table->string('status')->default('Hadir');
         $table->timestamps();
+    
     });
 }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('attendances');
+    }
+};

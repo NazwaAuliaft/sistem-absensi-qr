@@ -353,9 +353,7 @@ table tbody tr:hover{
     </div>
 
     <div class="card-body">
-
-        <canvas id="attendanceChart" height="120"></canvas>
-
+        <canvas id="attendanceChart"></canvas>
     </div>
 
 </div>
@@ -364,27 +362,7 @@ table tbody tr:hover{
 
 <script>
 
-function updateClock(){
-
-    const now = new Date();
-
-    document.getElementById('clock').innerHTML =
-        now.toLocaleDateString('id-ID')
-        + ' '
-        + now.toLocaleTimeString('id-ID');
-
-}
-
-setInterval(updateClock,1000);
-
-updateClock();
-
 const ctx = document.getElementById('attendanceChart');
-
-const gradient = ctx.getContext('2d').createLinearGradient(0,0,0,400);
-
-gradient.addColorStop(0,'#2563eb');
-gradient.addColorStop(1,'#60a5fa');
 
 new Chart(ctx, {
 
@@ -392,12 +370,7 @@ new Chart(ctx, {
 
     data: {
 
-        labels: [
-            'hadir',
-            'izin',
-            'sakit',
-            'alpha'
-        ],
+        labels: ['Hadir','Izin','Sakit','Alpha'],
 
         datasets: [{
 
@@ -411,13 +384,13 @@ new Chart(ctx, {
             ],
 
             backgroundColor: [
-                '22c55e',
-                '3b82f6',
-                'f59e0b',
-                'ef4444'
-            ]
+                '#22c55e',
+                '#3b82f6',
+                '#f59e0b',
+                '#ef4444'
+            ],
 
-            borderRadius: 12,
+            borderRadius: 10
 
         }]
 
@@ -427,19 +400,24 @@ new Chart(ctx, {
 
         responsive: true,
 
-        legend: {
-            display:false
-        }
-    },
+        plugins: {
+
+            legend: {
+                display: false
+            }
+
+        },
 
         scales: {
 
             y: {
-                beginAtZero:true
+                beginAtZero: true
             }
 
         }
 
-    });
+    }
 
-</script> 
+});
+
+</script>
