@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Sistem Absensi QR</title>
+<title>Sistem Absensi Mahasiswa</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -13,60 +12,62 @@
 <style>
 
 body{
-    background:#eef2f7;
-    font-family:'Segoe UI',sans-serif;
+    background:#f5f7fb;
+    margin:0;
 }
 
-.navbar{
-    background:linear-gradient(135deg,#0d6efd,#3d8bfd);
-    box-shadow:0 3px 15px rgba(0,0,0,.15);
-}
-
-.dashboard-card{
-    border:none;
-    border-radius:20px;
+.sidebar{
+    width:260px;
+    height:100vh;
+    position:fixed;
+    background:#0f172a;
     color:white;
-    overflow:hidden;
-    transition:.3s;
+    left:0;
+    top:0;
 }
 
-.dashboard-card:hover{
-    transform:translateY(-4px);
+.logo-area{
+    text-align:center;
+    padding:25px;
+    border-bottom:1px solid rgba(255,255,255,.1);
 }
 
-.card-total{
-    background:linear-gradient(135deg,#0d6efd,#4d9fff);
+.logo-area h4{
+    margin-top:10px;
 }
 
-.card-hadir{
-    background:linear-gradient(135deg,#198754,#41c77a);
+.sidebar-menu a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:15px 25px;
 }
 
-.main-card{
+.sidebar-menu a:hover{
+    background:#1e293b;
+}
+
+.content{
+    margin-left:260px;
+    padding:25px;
+}
+
+.card{
     border:none;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
 
-.form-control{
-    border-radius:12px;
+.stat-card{
+    color:white;
 }
 
-.btn-primary{
-    border-radius:12px;
+.total-card{
+    background:linear-gradient(135deg,#2563eb,#60a5fa);
 }
 
-.table{
-    margin-bottom:0;
-}
-
-.badge{
-    font-size:14px;
-}
-
-.clock{
-    font-size:18px;
-    font-weight:bold;
+.today-card{
+    background:linear-gradient(135deg,#059669,#34d399);
 }
 
 </style>
@@ -74,123 +75,72 @@ body{
 </head>
 <body>
 
-<nav class="navbar navbar-dark">
-    <div class="container">
+<div class="sidebar">
 
-```
-    <span class="navbar-brand fw-bold">
-        <i class="bi bi-qr-code-scan"></i>
-        Sistem Absensi QR
-    </span>
+    <div class="logo-area">
 
-    <span class="text-white clock" id="clock"></span>
+        <i class="bi bi-building fs-1"></i>
 
-</div>
-```
+        <h4>Kampus Digital</h4>
 
-</nav>
-
-<div class="container mt-4">
-
-```
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
-<div class="row mb-4">
-
-    <div class="col-md-6 mb-3">
-
-        <div class="dashboard-card card-total p-4">
-
-            <h5>
-                <i class="bi bi-people-fill"></i>
-                Total Absensi
-            </h5>
-
-            <h1>{{ $total }}</h1>
-
-        </div>
+        <small>Sistem Absensi Mahasiswa</small>
 
     </div>
 
-    <div class="col-md-6 mb-3">
+    <div class="sidebar-menu">
 
-        <div class="dashboard-card card-hadir p-4">
+        <a href="#">
+            <i class="bi bi-speedometer2"></i>
+            Dashboard
+        </a>
 
-            <h5>
-                <i class="bi bi-check-circle-fill"></i>
-                Hadir Hari Ini
-            </h5>
+        <a href="#">
+            <i class="bi bi-person-check"></i>
+            Absensi
+        </a>
 
-            <h1>{{ $hadirHariIni }}</h1>
-
-        </div>
+        <a href="#">
+            <i class="bi bi-bar-chart"></i>
+            Statistik
+        </a>
 
     </div>
 
 </div>
 
-<div class="row">
+<div class="content">
 
-    <div class="col-lg-4 mb-4">
+    <div class="d-flex justify-content-between mb-4">
 
-        <div class="card main-card">
+        <h2>
+            Dashboard Absensi Mahasiswa
+        </h2>
 
-            <div class="card-header bg-white fw-bold">
-                <i class="bi bi-person-plus"></i>
-                Form Absensi
+        <div id="clock"></div>
+
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+
+            <div class="card total-card stat-card p-4">
+
+                <h5>Total Absensi</h5>
+
+                <h1>{{ $total }}</h1>
+
             </div>
 
-            <div class="card-body">
+        </div>
 
-                <form action="/absen" method="POST">
+        <div class="col-md-6">
 
-                    @csrf
+            <div class="card today-card stat-card p-4">
 
-                    <div class="mb-3">
+                <h5>Hadir Hari Ini</h5>
 
-                        <label>NIS</label>
-
-                        <input
-                            type="text"
-                            name="nis"
-                            class="form-control"
-                            placeholder="Masukkan NIS"
-                            required>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label>Nama</label>
-
-                        <input
-                            type="text"
-                            name="nama"
-                            class="form-control"
-                            placeholder="Masukkan Nama"
-                            required>
-
-                    </div>
-
-                    <button class="btn btn-primary w-100">
-
-                        <i class="bi bi-check-circle"></i>
-
-                        Simpan Absensi
-
-                    </button>
-
-                </form>
+                <h1>{{ $hadirHariIni }}</h1>
 
             </div>
 
@@ -198,66 +148,104 @@ body{
 
     </div>
 
-    <div class="col-lg-8">
+    <div class="row">
 
-        <div class="card main-card">
+        <div class="col-lg-4">
 
-            <div class="card-header bg-white fw-bold">
+            <div class="card">
 
-                <i class="bi bi-table"></i>
+                <div class="card-header">
+                    Form Absensi Mahasiswa
+                </div>
 
-                Data Absensi
+                <div class="card-body">
+
+                    <form action="/absen" method="POST">
+
+                        @csrf
+
+                        <div class="mb-3">
+
+                            <label>NIM</label>
+
+                            <input
+                                type="text"
+                                name="nis"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Nama Mahasiswa</label>
+
+                            <input
+                                type="text"
+                                name="nama"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <button class="btn btn-primary w-100">
+
+                            Simpan Absensi
+
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
-            <div class="card-body">
+        </div>
 
-                <div class="table-responsive">
+        <div class="col-lg-8">
 
-                    <table class="table table-hover">
+            <div class="card">
 
-                        <thead class="table-primary">
+                <div class="card-header">
+                    Riwayat Absensi
+                </div>
 
-                            <tr>
-                                <th>NIS</th>
-                                <th>Nama</th>
-                                <th>Tanggal</th>
-                                <th>Jam Masuk</th>
-                                <th>Status</th>
-                            </tr>
+                <div class="card-body">
+
+                    <table class="table table-striped">
+
+                        <thead>
+
+                        <tr>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Tanggal</th>
+                            <th>Jam</th>
+                            <th>Status</th>
+                        </tr>
 
                         </thead>
 
                         <tbody>
 
-                        @forelse($attendances as $a)
+                        @foreach($attendances as $a)
 
-                            <tr>
+                        <tr>
 
-                                <td>{{ $a->nis }}</td>
-                                <td>{{ $a->nama }}</td>
-                                <td>{{ $a->tanggal }}</td>
-                                <td>{{ $a->jam_masuk }}</td>
+                            <td>{{ $a->nis }}</td>
+                            <td>{{ $a->nama }}</td>
+                            <td>{{ $a->tanggal }}</td>
+                            <td>{{ $a->jam_masuk }}</td>
 
-                                <td>
-                                    <span class="badge bg-success">
-                                        {{ $a->status }}
-                                    </span>
-                                </td>
+                            <td>
+                                <span class="badge bg-success">
+                                    {{ $a->status }}
+                                </span>
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                        @empty
-
-                            <tr>
-
-                                <td colspan="5" class="text-center">
-                                    Belum ada data absensi
-                                </td>
-
-                            </tr>
-
-                        @endforelse
+                        @endforeach
 
                         </tbody>
 
@@ -272,9 +260,6 @@ body{
     </div>
 
 </div>
-```
-
-</div>
 
 <script>
 
@@ -282,10 +267,10 @@ function updateClock(){
 
     const now = new Date();
 
-    document.getElementById("clock").innerHTML =
-        now.toLocaleDateString('id-ID') +
-        " " +
-        now.toLocaleTimeString('id-ID');
+    document.getElementById('clock').innerHTML =
+        now.toLocaleDateString('id-ID')
+        + ' '
+        + now.toLocaleTimeString('id-ID');
 
 }
 
