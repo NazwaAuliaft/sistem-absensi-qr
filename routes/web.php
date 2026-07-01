@@ -1,7 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AttendanceController;
 
-Route::get('/', [AttendanceController::class, 'index']);
-Route::post('/absen', [AttendanceController::class, 'store']);
+// Rute untuk halaman utama / Dashboard
+Route::get('/', function () {
+    return view('attendance');
+});
+
+// Rute untuk halaman Absensi (QR Code)
+Route::get('/absensi', function () {
+    return view('absensi');
+});
+
+// Rute untuk halaman Statistik
+Route::get('/statistik', function () {
+    return view('statistik');
+});
